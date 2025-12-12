@@ -22,7 +22,486 @@
     .small{font-size:13px;color:#475569}
   </style>
 </head>
-<body>
+<body> net::ERR_INTERNET_DISCONNECTED
+e.ea @ webchannel_blob_es2018.js:57
+(anonymous) @ webchannel_connection.ts:175
+Jo @ webchannel_connection.ts:83
+Go @ rest_connection.ts:113
+Ho @ rest_connection.ts:165
+(anonymous) @ datastore.ts:150
+Promise.then
+Ho @ datastore.ts:146
+__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
+lookup @ transaction.ts:74
+get @ transaction.ts:96
+get @ transaction.ts:70
+(anonymous) @ index.html:174
+(anonymous) @ field_value_impl.ts:32
+Hu @ transaction_runner.ts:86
+(anonymous) @ transaction_runner.ts:64
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+ju @ transaction_runner.ts:59
+(anonymous) @ transaction.ts:114
+await in (anonymous)
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
+runTransaction @ transaction.ts:118
+(anonymous) @ index.html:173
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190Understand this error
+logger.ts:123 [2025-12-11T18:19:03.174Z]  @firebase/firestore: Firestore (12.6.0): RestConnection RPC 'BatchGetDocuments' 0x6ad04e2d failed with error:  {"code":"unavailable","name":"FirebaseError"} url:  https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet request: {"documents":["projects/airforshare-ffcee/databases/(default)/documents/shares/8XUY0O"]}
+defaultLogHandler @ logger.ts:123
+warn @ logger.ts:209
+__PRIVATE_logWarn @ log.ts:76
+(anonymous) @ rest_connection.ts:119
+Promise.then
+Go @ rest_connection.ts:113
+Ho @ rest_connection.ts:165
+(anonymous) @ datastore.ts:150
+Promise.then
+Ho @ datastore.ts:146
+__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
+lookup @ transaction.ts:74
+get @ transaction.ts:96
+get @ transaction.ts:70
+(anonymous) @ index.html:174
+(anonymous) @ field_value_impl.ts:32
+Hu @ transaction_runner.ts:86
+(anonymous) @ transaction_runner.ts:64
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+ju @ transaction_runner.ts:59
+(anonymous) @ transaction.ts:114
+await in (anonymous)
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
+runTransaction @ transaction.ts:118
+(anonymous) @ index.html:173
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190Understand this warning
+webchannel_connection.ts:175  POST https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet net::ERR_INTERNET_DISCONNECTED
+e.ea @ webchannel_blob_es2018.js:57
+(anonymous) @ webchannel_connection.ts:175
+Jo @ webchannel_connection.ts:83
+Go @ rest_connection.ts:113
+Ho @ rest_connection.ts:165
+(anonymous) @ datastore.ts:150
+Promise.then
+Ho @ datastore.ts:146
+__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
+lookup @ transaction.ts:74
+get @ transaction.ts:96
+get @ transaction.ts:70
+(anonymous) @ index.html:174
+(anonymous) @ field_value_impl.ts:32
+Hu @ transaction_runner.ts:86
+(anonymous) @ transaction_runner.ts:64
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+ju @ transaction_runner.ts:59
+(anonymous) @ transaction.ts:114
+await in (anonymous)
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
+runTransaction @ transaction.ts:118
+(anonymous) @ index.html:173
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190Understand this error
+logger.ts:123 [2025-12-11T18:19:03.223Z]  @firebase/firestore: Firestore (12.6.0): RestConnection RPC 'BatchGetDocuments' 0x6ad04e2f failed with error:  {"code":"unavailable","name":"FirebaseError"} url:  https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet request: {"documents":["projects/airforshare-ffcee/databases/(default)/documents/shares/oNili4"]}
+defaultLogHandler @ logger.ts:123
+warn @ logger.ts:209
+__PRIVATE_logWarn @ log.ts:76
+(anonymous) @ rest_connection.ts:119
+Promise.then
+Go @ rest_connection.ts:113
+Ho @ rest_connection.ts:165
+(anonymous) @ datastore.ts:150
+Promise.then
+Ho @ datastore.ts:146
+__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
+lookup @ transaction.ts:74
+get @ transaction.ts:96
+get @ transaction.ts:70
+(anonymous) @ index.html:174
+(anonymous) @ field_value_impl.ts:32
+Hu @ transaction_runner.ts:86
+(anonymous) @ transaction_runner.ts:64
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+(anonymous) @ transaction_runner.ts:111
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+Yu @ transaction_runner.ts:108
+(anonymous) @ transaction_runner.ts:84
+Promise.catch
+(anonymous) @ transaction_runner.ts:84
+(anonymous) @ backoff.ts:145
+(anonymous) @ async_queue.ts:200
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+handleDelayElapsed @ async_queue.ts:194
+(anonymous) @ async_queue.ts:168
+setTimeout
+start @ async_queue.ts:160
+createAndSchedule @ async_queue.ts:160
+enqueueAfterDelay @ async_queue_impl.ts:231
+p_ @ backoff.ts:136
+Ju @ transaction_runner.ts:59
+ju @ transaction_runner.ts:59
+(anonymous) @ transaction.ts:114
+await in (anonymous)
+(anonymous) @ async_queue_impl.ts:138
+(anonymous) @ async_queue_impl.ts:192
+Promise.then
+cc @ async_queue_impl.ts:189
+enqueue @ async_queue_impl.ts:136
+enqueueAndForget @ async_queue_impl.ts:97
+__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
+runTransaction @ transaction.ts:118
+(anonymous) @ index.html:173
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190
+await in (anonymous)
+(anonymous) @ index.html:190Understand this warning
+webchannel_connection.ts:175  POST https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet net::ERR_INTERNET_DISCONNECTED
   <div class="container">
     <h1>AirForShare — Share text & files (real-time)</h1>
     <p class="muted">Paste your Firebase config into the JS placeholder, then use this page to create & access shares by code. Multiple users can use same tool simultaneously.</p>
@@ -40,7 +519,8 @@
 
       <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
         <button id="createBtn">Save & Share</button>
-        <div class="muted small">Default expiry: 24 hours (you can change later)</div>
+        <button id="clearBtn" style="background:#ef4444">Clear All</button>
+        <div class="muted small">Default expiry: 24 hours</div>
       </div>
 
       <div id="createdBox" class="card" style="display:none;margin-top:12px">
@@ -57,6 +537,7 @@
       <div style="display:flex;gap:8px;align-items:center">
         <input id="openCodeInput" type="text" placeholder="Enter share code (e.g., Ab1XyZ)" />
         <button id="openBtn">Open</button>
+        <button id="clearViewerBtn" style="background:#ef4444">Clear Viewer</button>
       </div>
 
       <div id="viewer" class="card" style="display:none">
@@ -131,6 +612,8 @@
     const generatedCodeEl = document.getElementById("generatedCode");
     const copyCodeBtn = document.getElementById("copyCodeBtn");
     const openViewerBtn = document.getElementById("openViewerBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const clearViewerBtn = document.getElementById("clearViewerBtn");
 
     const openCodeInput = document.getElementById("openCodeInput");
     const openBtn = document.getElementById("openBtn");
@@ -233,6 +716,30 @@
       });
     }
 
+    // Clear all data function
+    function clearAllData() {
+      shareTitle.value = "";
+      shareText.value = "";
+      shareFiles.value = "";
+      createdBox.style.display = "none";
+      generatedCodeEl.textContent = "";
+    }
+
+    function clearViewer() {
+      viewer.style.display = "none";
+      openCodeInput.value = "";
+      quickText.value = "";
+      liveText.textContent = "";
+      filesList.innerHTML = "";
+      viewerMeta.textContent = "";
+      if (currentUnsubscribe) currentUnsubscribe();
+      if (currentFilesUnsub) currentFilesUnsub();
+    }
+
+    // Clear buttons
+    clearBtn.addEventListener("click", clearAllData);
+    clearViewerBtn.addEventListener("click", clearViewer);
+
     // Copy code button
     copyCodeBtn.addEventListener("click", () => {
       const code = generatedCodeEl.textContent;
@@ -303,6 +810,15 @@
           };
         });
       });
+    });
+
+    // Enter key support for inputs
+    quickText.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendQuickText.click();
+    });
+    
+    openCodeInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") openBtn.click();
     });
 
     // Quick text send: append an "edit" entry and update latestText
