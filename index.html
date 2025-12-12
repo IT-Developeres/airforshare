@@ -1,871 +1,329 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AirForShare — Real-time text & file share</title>
-  <style>
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:18px;background:#f7fafc;color:#0f172a}
-    .container{max-width:980px;margin:0 auto;background:white;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,.08)}
-    h1{margin:0 0 10px}
-    .row{display:flex;gap:12px}
-    .col{flex:1}
-    label{display:block;margin:8px 0 6px;font-weight:600}
-    textarea{width:100%;min-height:120px;padding:8px;border-radius:6px;border:1px solid #e2e8f0}
-    input[type="text"], input[type="file"], input[type="number"]{width:100%;padding:8px;border-radius:6px;border:1px solid #e2e8f0}
-    button{padding:8px 12px;border-radius:8px;border:0;background:#0ea5a4;color:white;font-weight:600;cursor:pointer}
-    .muted{color:#6b7280;font-size:13px}
-    .card{padding:12px;border-radius:8px;border:1px solid #e6eef0;margin-top:12px}
-    .list{margin-top:12px}
-    .file-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed #eef2f7}
-    .code-box{display:inline-block;padding:8px 10px;border-radius:6px;background:#0f172a;color:white;font-family:monospace}
-    .small{font-size:13px;color:#475569}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirForShare - Real-time Text & File Sharing</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 20px; text-align: center; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .section h3 { margin-bottom: 15px; color: #555; }
+        input, textarea, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        button { background: #007bff; color: white; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        .clear-btn { background: #dc3545; }
+        .clear-btn:hover { background: #c82333; }
+        .btn-group { display: flex; gap: 10px; }
+        .btn-group button { flex: 1; }
+        .code-display { background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 18px; font-weight: bold; text-align: center; margin: 10px 0; }
+        .file-list { margin-top: 10px; }
+        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f9fa; margin: 5px 0; border-radius: 5px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .live-text { background: #f8f9fa; padding: 15px; border-radius: 5px; min-height: 100px; white-space: pre-wrap; border: 1px solid #ddd; }
+        .hidden { display: none; }
+        .network-info { background: #e7f3ff; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
 </head>
-<body> net::ERR_INTERNET_DISCONNECTED
-e.ea @ webchannel_blob_es2018.js:57
-(anonymous) @ webchannel_connection.ts:175
-Jo @ webchannel_connection.ts:83
-Go @ rest_connection.ts:113
-Ho @ rest_connection.ts:165
-(anonymous) @ datastore.ts:150
-Promise.then
-Ho @ datastore.ts:146
-__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
-lookup @ transaction.ts:74
-get @ transaction.ts:96
-get @ transaction.ts:70
-(anonymous) @ index.html:174
-(anonymous) @ field_value_impl.ts:32
-Hu @ transaction_runner.ts:86
-(anonymous) @ transaction_runner.ts:64
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-ju @ transaction_runner.ts:59
-(anonymous) @ transaction.ts:114
-await in (anonymous)
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
-runTransaction @ transaction.ts:118
-(anonymous) @ index.html:173
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190Understand this error
-logger.ts:123 [2025-12-11T18:19:03.174Z]  @firebase/firestore: Firestore (12.6.0): RestConnection RPC 'BatchGetDocuments' 0x6ad04e2d failed with error:  {"code":"unavailable","name":"FirebaseError"} url:  https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet request: {"documents":["projects/airforshare-ffcee/databases/(default)/documents/shares/8XUY0O"]}
-defaultLogHandler @ logger.ts:123
-warn @ logger.ts:209
-__PRIVATE_logWarn @ log.ts:76
-(anonymous) @ rest_connection.ts:119
-Promise.then
-Go @ rest_connection.ts:113
-Ho @ rest_connection.ts:165
-(anonymous) @ datastore.ts:150
-Promise.then
-Ho @ datastore.ts:146
-__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
-lookup @ transaction.ts:74
-get @ transaction.ts:96
-get @ transaction.ts:70
-(anonymous) @ index.html:174
-(anonymous) @ field_value_impl.ts:32
-Hu @ transaction_runner.ts:86
-(anonymous) @ transaction_runner.ts:64
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-ju @ transaction_runner.ts:59
-(anonymous) @ transaction.ts:114
-await in (anonymous)
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
-runTransaction @ transaction.ts:118
-(anonymous) @ index.html:173
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190Understand this warning
-webchannel_connection.ts:175  POST https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet net::ERR_INTERNET_DISCONNECTED
-e.ea @ webchannel_blob_es2018.js:57
-(anonymous) @ webchannel_connection.ts:175
-Jo @ webchannel_connection.ts:83
-Go @ rest_connection.ts:113
-Ho @ rest_connection.ts:165
-(anonymous) @ datastore.ts:150
-Promise.then
-Ho @ datastore.ts:146
-__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
-lookup @ transaction.ts:74
-get @ transaction.ts:96
-get @ transaction.ts:70
-(anonymous) @ index.html:174
-(anonymous) @ field_value_impl.ts:32
-Hu @ transaction_runner.ts:86
-(anonymous) @ transaction_runner.ts:64
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-ju @ transaction_runner.ts:59
-(anonymous) @ transaction.ts:114
-await in (anonymous)
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
-runTransaction @ transaction.ts:118
-(anonymous) @ index.html:173
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190Understand this error
-logger.ts:123 [2025-12-11T18:19:03.223Z]  @firebase/firestore: Firestore (12.6.0): RestConnection RPC 'BatchGetDocuments' 0x6ad04e2f failed with error:  {"code":"unavailable","name":"FirebaseError"} url:  https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet request: {"documents":["projects/airforshare-ffcee/databases/(default)/documents/shares/oNili4"]}
-defaultLogHandler @ logger.ts:123
-warn @ logger.ts:209
-__PRIVATE_logWarn @ log.ts:76
-(anonymous) @ rest_connection.ts:119
-Promise.then
-Go @ rest_connection.ts:113
-Ho @ rest_connection.ts:165
-(anonymous) @ datastore.ts:150
-Promise.then
-Ho @ datastore.ts:146
-__PRIVATE_invokeBatchGetDocumentsRpc @ datastore.ts:217
-lookup @ transaction.ts:74
-get @ transaction.ts:96
-get @ transaction.ts:70
-(anonymous) @ index.html:174
-(anonymous) @ field_value_impl.ts:32
-Hu @ transaction_runner.ts:86
-(anonymous) @ transaction_runner.ts:64
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-(anonymous) @ transaction_runner.ts:111
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-Yu @ transaction_runner.ts:108
-(anonymous) @ transaction_runner.ts:84
-Promise.catch
-(anonymous) @ transaction_runner.ts:84
-(anonymous) @ backoff.ts:145
-(anonymous) @ async_queue.ts:200
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-handleDelayElapsed @ async_queue.ts:194
-(anonymous) @ async_queue.ts:168
-setTimeout
-start @ async_queue.ts:160
-createAndSchedule @ async_queue.ts:160
-enqueueAfterDelay @ async_queue_impl.ts:231
-p_ @ backoff.ts:136
-Ju @ transaction_runner.ts:59
-ju @ transaction_runner.ts:59
-(anonymous) @ transaction.ts:114
-await in (anonymous)
-(anonymous) @ async_queue_impl.ts:138
-(anonymous) @ async_queue_impl.ts:192
-Promise.then
-cc @ async_queue_impl.ts:189
-enqueue @ async_queue_impl.ts:136
-enqueueAndForget @ async_queue_impl.ts:97
-__PRIVATE_firestoreClientTransaction @ firestore_client.ts:605
-runTransaction @ transaction.ts:118
-(anonymous) @ index.html:173
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190
-await in (anonymous)
-(anonymous) @ index.html:190Understand this warning
-webchannel_connection.ts:175  POST https://firestore.googleapis.com/v1/projects/airforshare-ffcee/databases/(default)/documents:batchGet net::ERR_INTERNET_DISCONNECTED
-  <div class="container">
-    <h1>AirForShare — Share text & files (real-time)</h1>
-    <p class="muted">Paste your Firebase config into the JS placeholder, then use this page to create & access shares by code. Multiple users can use same tool simultaneously.</p>
-
-    <div class="card">
-      <h3>Create a new share</h3>
-      <label>Title</label>
-      <input id="shareTitle" type="text" placeholder="Optional title (e.g., 'Project files')" />
-
-      <label>Text (paste or type)</label>
-      <textarea id="shareText" placeholder="Type text or paste content to share..."></textarea>
-
-      <label>Files (you can choose multiple)</label>
-      <input id="shareFiles" type="file" multiple />
-
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button id="createBtn">Save & Share</button>
-        <button id="clearBtn" style="background:#ef4444">Clear All</button>
-        <div class="muted small">Default expiry: 24 hours</div>
-      </div>
-
-      <div id="createdBox" class="card" style="display:none;margin-top:12px">
-        <div><strong>Share code:</strong> <span id="generatedCode" class="code-box"></span>
-          <button id="copyCodeBtn" style="margin-left:10px">Copy</button>
+<body>
+    <div class="container">
+        <h1>🚀 AirForShare - Real-time Sharing</h1>
+        
+        <div class="network-info">
+            <strong>Network Status:</strong> <span id="networkStatus">Checking...</span><br>
+            <strong>Your IP:</strong> <span id="localIP">Loading...</span>
         </div>
-        <div class="small" style="margin-top:8px">Share this code with someone to let them view/download the text & files in real-time.</div>
-        <div style="margin-top:8px"><button id="openViewerBtn">Open viewer for this code</button></div>
-      </div>
+
+        <!-- Create Share Section -->
+        <div class="section">
+            <h3>📝 Create New Share</h3>
+            <input type="text" id="shareTitle" placeholder="Title (optional)">
+            <textarea id="shareText" rows="5" placeholder="Type or paste your text here..."></textarea>
+            <input type="file" id="shareFiles" multiple>
+            <div class="btn-group">
+                <button onclick="createShare()">Save & Share</button>
+                <button class="clear-btn" onclick="clearCreate()">Clear All</button>
+            </div>
+            <div id="createStatus" class="status hidden"></div>
+            <div id="shareCodeDisplay" class="hidden">
+                <div class="code-display" id="generatedCode"></div>
+                <button onclick="copyCode()">📋 Copy Code</button>
+            </div>
+        </div>
+
+        <!-- Open Share Section -->
+        <div class="section">
+            <h3>🔓 Open Share</h3>
+            <input type="text" id="openCode" placeholder="Enter 6-character share code">
+            <div class="btn-group">
+                <button onclick="openShare()">Open Share</button>
+                <button class="clear-btn" onclick="clearViewer()">Clear Viewer</button>
+            </div>
+            <div id="openStatus" class="status hidden"></div>
+        </div>
+
+        <!-- Viewer Section -->
+        <div id="viewerSection" class="section hidden">
+            <h3>👀 Share Viewer - <span id="viewerTitle">Untitled</span></h3>
+            <div><strong>Code:</strong> <span class="code-display" id="viewerCode"></span></div>
+            
+            <div style="margin: 15px 0;">
+                <strong>📄 Text Content:</strong>
+                <div id="liveText" class="live-text">No content yet...</div>
+            </div>
+
+            <div style="margin: 15px 0;">
+                <strong>📁 Files:</strong>
+                <div id="filesList" class="file-list">No files shared</div>
+            </div>
+
+            <div style="margin: 15px 0;">
+                <strong>💬 Send Quick Update:</strong>
+                <input type="text" id="quickMessage" placeholder="Type a quick message...">
+                <button onclick="sendQuickUpdate()">Send</button>
+            </div>
+        </div>
     </div>
 
-    <div class="card" style="margin-top:16px">
-      <h3>Open a share (enter code)</h3>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="openCodeInput" type="text" placeholder="Enter share code (e.g., Ab1XyZ)" />
-        <button id="openBtn">Open</button>
-        <button id="clearViewerBtn" style="background:#ef4444">Clear Viewer</button>
-      </div>
+    <script>
+        // Local storage for shares
+        let shares = JSON.parse(localStorage.getItem('airforshare_data') || '{}');
+        let currentShareCode = null;
+        let updateInterval = null;
 
-      <div id="viewer" class="card" style="display:none">
-        <h4 id="viewerTitle">Share</h4>
-        <div class="small">Share code: <span id="viewerCode" class="code-box"></span></div>
-        <div style="margin-top:8px">
-          <strong>Text (live):</strong>
-          <div id="liveText" style="white-space:pre-wrap;padding:8px;border-radius:6px;border:1px solid #eef2f7;background:#fbfdff;margin-top:6px;min-height:80px"></div>
-        </div>
-
-        <div style="margin-top:8px">
-          <strong>Files:</strong>
-          <div id="filesList" class="list"></div>
-        </div>
-
-        <div style="margin-top:8px">
-          <strong>Send a quick text update:</strong>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <input id="quickText" type="text" placeholder="Type a short message to append/update" />
-            <button id="sendQuickText">Send</button>
-          </div>
-        </div>
-
-        <div style="margin-top:8px" id="viewerMeta" class="muted small"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase SDK (v12 modular) -->
-  <script type="module">
-    // ----------------- PASTE YOUR FIREBASE CONFIG HERE -----------------
-    // Replace the following object with your Firebase config from console
-    const firebaseConfig = {
-      apiKey: "AIzaSyDH0E6mkfkEUh76nv__2fOk-HJteZCj-hE",
-    authDomain: "airforshare-ffcee.firebaseapp.com",
-    projectId: "airforshare-ffcee",
-    storageBucket: "airforshare-ffcee.firebasestorage.app",
-    messagingSenderId: "1086862252600",
-    appId: "1:1086862252600:web:d0aad96edea3ab6f27e4cd"
-    };
-    // ------------------------------------------------------------------
-
-    // Minimal validation
-    if (!firebaseConfig || !firebaseConfig.projectId) {
-      console.warn("Firebase config missing — paste your firebaseConfig object in the code.");
-    }
-
-    // Firebase imports (modular)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, addDoc, serverTimestamp, onSnapshot, updateDoc, arrayUnion, writeBatch, runTransaction, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-
-    // init
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
-
-    // Sign in anonymously for simple usage (optional)
-    signInAnonymously(auth).catch((e)=>console.warn("Anon sign-in failed:", e));
-    onAuthStateChanged(auth, user => {
-      if (user) console.log("Signed in as", user.uid);
-    });
-
-    // DOM refs
-    const createBtn = document.getElementById("createBtn");
-    const shareTitle = document.getElementById("shareTitle");
-    const shareText = document.getElementById("shareText");
-    const shareFiles = document.getElementById("shareFiles");
-    const createdBox = document.getElementById("createdBox");
-    const generatedCodeEl = document.getElementById("generatedCode");
-    const copyCodeBtn = document.getElementById("copyCodeBtn");
-    const openViewerBtn = document.getElementById("openViewerBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const clearViewerBtn = document.getElementById("clearViewerBtn");
-
-    const openCodeInput = document.getElementById("openCodeInput");
-    const openBtn = document.getElementById("openBtn");
-    const viewer = document.getElementById("viewer");
-    const viewerCode = document.getElementById("viewerCode");
-    const viewerTitle = document.getElementById("viewerTitle");
-    const liveText = document.getElementById("liveText");
-    const filesList = document.getElementById("filesList");
-    const quickText = document.getElementById("quickText");
-    const sendQuickText = document.getElementById("sendQuickText");
-    const viewerMeta = document.getElementById("viewerMeta");
-
-    // Utility: generate short base62 code (6 chars)
-    const CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    function genCode(len=6){
-      let s="";
-      for(let i=0;i<len;i++) s+=CHARS[Math.floor(Math.random()*CHARS.length)];
-      return s;
-    }
-
-    // Create a share document with generated code
-    createBtn.addEventListener("click", async () => {
-      const title = shareTitle.value.trim() || "Untitled";
-      const text = shareText.value || "";
-      const files = shareFiles.files;
-      const code = genCode(6);
-
-      // default expiry 24 hours from now (optional)
-      const expiresAt = new Date(Date.now() + 24*60*60*1000);
-
-      // prepare share doc
-      const shareDocRef = doc(db, "shares", code);
-
-      // create doc in transaction to avoid collisions (rare)
-      try {
-        await runTransaction(db, async (tx) => {
-          const snap = await tx.get(shareDocRef);
-          if (snap.exists()) throw "collision";
-          tx.set(shareDocRef, {
-            code,
-            title,
-            ownerUid: auth.currentUser ? auth.currentUser.uid : null,
-            createdAt: serverTimestamp(),
-            expiresAt: expiresAt,
-            latestText: text,
-            viewers: [],
-            filesCount: 0
-          });
-        });
-      } catch (e) {
-        console.warn("Collision creating code, retrying...", e);
-        // on collision, simply retry (very unlikely)
-        return createBtn.click();
-      }
-
-      // upload files if any
-      if (files && files.length > 0) {
-        const uploadPromises = [];
-        for (const f of files) {
-          uploadPromises.push(uploadFileForShare(code, f));
+        // Generate random 6-character code
+        function generateCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
         }
-        await Promise.all(uploadPromises);
-        // update filesCount
-        const shareRef = doc(db, "shares", code);
-        await updateDoc(shareRef, { filesCount: files.length });
-      }
 
-      // show created UI
-      generatedCodeEl.textContent = code;
-      createdBox.style.display = "block";
-      createdBox.scrollIntoView({behavior:"smooth"});
-    });
-
-    async function uploadFileForShare(code, file){
-      const fileDocRef = doc(collection(db, "shares", code, "files")); // auto id
-      const path = `shares/${code}/${Date.now()}_${file.name}`;
-      const sRef = storageRef(storage, path);
-      // upload bytes with resumable so larger files ok
-      const uploadTask = uploadBytesResumable(sRef, file);
-      return new Promise((resolve, reject) => {
-        uploadTask.on('state_changed', (snapshot)=>{
-          // could show progress if desired
-        }, (err)=>{
-          console.error("Upload failed", err);
-          reject(err);
-        }, async ()=>{
-          // success
-          const url = await getDownloadURL(sRef);
-          await setDoc(fileDocRef, {
-            filename: file.name,
-            storagePath: path,
-            downloadURL: url,
-            size: file.size,
-            contentType: file.type || null,
-            uploadedAt: serverTimestamp(),
-            uploader: auth.currentUser ? auth.currentUser.uid : null
-          });
-          resolve();
-        });
-      });
-    }
-
-    // Clear all data function
-    function clearAllData() {
-      shareTitle.value = "";
-      shareText.value = "";
-      shareFiles.value = "";
-      createdBox.style.display = "none";
-      generatedCodeEl.textContent = "";
-    }
-
-    function clearViewer() {
-      viewer.style.display = "none";
-      openCodeInput.value = "";
-      quickText.value = "";
-      liveText.textContent = "";
-      filesList.innerHTML = "";
-      viewerMeta.textContent = "";
-      if (currentUnsubscribe) currentUnsubscribe();
-      if (currentFilesUnsub) currentFilesUnsub();
-    }
-
-    // Clear buttons
-    clearBtn.addEventListener("click", clearAllData);
-    clearViewerBtn.addEventListener("click", clearViewer);
-
-    // Copy code button
-    copyCodeBtn.addEventListener("click", () => {
-      const code = generatedCodeEl.textContent;
-      if (!code) return;
-      navigator.clipboard.writeText(code).then(()=> alert("Code copied to clipboard"));
-    });
-
-    // Open viewer for the created code
-    openViewerBtn.addEventListener("click", () => {
-      const code = generatedCodeEl.textContent;
-      if (!code) return alert("No code created");
-      openCodeInput.value = code;
-      openBtn.click();
-    });
-
-    // Open share by code
-    let currentUnsubscribe = null;
-    let currentFilesUnsub = null;
-    openBtn.addEventListener("click", async () => {
-      const code = openCodeInput.value.trim();
-      if (!code) return alert("Enter a code");
-      // detach previous listeners
-      if (currentUnsubscribe) currentUnsubscribe();
-      if (currentFilesUnsub) currentFilesUnsub();
-
-      const shareRef = doc(db, "shares", code);
-      // get once and then subscribe for realtime
-      const snap = await getDoc(shareRef);
-      if (!snap.exists()) return alert("Share not found or expired");
-      viewer.style.display = "block";
-      viewerCode.textContent = code;
-      viewerTitle.textContent = snap.data().title || "Share";
-
-      // realtime listener for share doc (updates to latestText, metadata)
-      currentUnsubscribe = onSnapshot(shareRef, docSnap => {
-        if (!docSnap.exists()){
-          alert("Share removed or expired");
-          viewer.style.display = "none";
-          return;
+        // Get local IP
+        function getLocalIP() {
+            const rtc = new RTCPeerConnection({iceServers:[]});
+            rtc.createDataChannel('');
+            rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
+            
+            rtc.onicecandidate = function(event) {
+                if (event.candidate) {
+                    const ip = event.candidate.candidate.split(' ')[4];
+                    if (ip && ip !== '0.0.0.0') {
+                        document.getElementById('localIP').textContent = ip;
+                        rtc.close();
+                    }
+                }
+            };
         }
-        const d = docSnap.data();
-        liveText.textContent = d.latestText || "";
-        const createdAt = d.createdAt ? new Date(d.createdAt.seconds*1000).toLocaleString() : "unknown";
-        const expires = d.expiresAt ? new Date(d.expiresAt.seconds*1000).toLocaleString() : "none";
-        viewerMeta.textContent = `Created: ${createdAt} • Expires: ${expires} • Files: ${d.filesCount || 0}`;
-      });
 
-      // realtime listener for files subcollection
-      const filesCol = collection(db, "shares", code, "files");
-      // simple polling: listen to recent files
-      currentFilesUnsub = onSnapshot(filesCol, (qSnap) => {
-        filesList.innerHTML = "";
-        qSnap.forEach(docFile => {
-          const f = docFile.data();
-          const el = document.createElement("div");
-          el.className = "file-row";
-          el.innerHTML = `<div><strong>${escapeHtml(f.filename)}</strong> <div class="muted small">${(f.size/1024).toFixed(1)} KB • uploaded</div></div>
-            <div>
-              <button data-url="${f.downloadURL}" class="downloadBtn">Download</button>
-            </div>`;
-          filesList.appendChild(el);
+        // Initialize
+        function init() {
+            getLocalIP();
+            document.getElementById('networkStatus').textContent = navigator.onLine ? 'Connected' : 'Offline';
+            
+            // Check for updates every 2 seconds when viewing a share
+            setInterval(() => {
+                if (currentShareCode) {
+                    loadShareData(currentShareCode);
+                }
+            }, 2000);
+
+            // Enter key support
+            document.getElementById('openCode').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') openShare();
+            });
+            
+            document.getElementById('quickMessage').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendQuickUpdate();
+            });
+        }
+
+        // Create new share
+        function createShare() {
+            const title = document.getElementById('shareTitle').value.trim() || 'Untitled';
+            const text = document.getElementById('shareText').value;
+            const files = document.getElementById('shareFiles').files;
+            
+            if (!text && files.length === 0) {
+                showStatus('createStatus', 'Please add some text or files to share', 'error');
+                return;
+            }
+
+            const code = generateCode();
+            const shareData = {
+                title: title,
+                text: text,
+                files: [],
+                created: new Date().toISOString(),
+                lastUpdate: new Date().toISOString()
+            };
+
+            // Handle files
+            if (files.length > 0) {
+                for (let file of files) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        shareData.files.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            data: e.target.result
+                        });
+                        
+                        // Save when all files are processed
+                        if (shareData.files.length === files.length) {
+                            saveShare(code, shareData);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                saveShare(code, shareData);
+            }
+        }
+
+        // Save share to localStorage
+        function saveShare(code, shareData) {
+            shares[code] = shareData;
+            localStorage.setItem('airforshare_data', JSON.stringify(shares));
+            
+            document.getElementById('generatedCode').textContent = code;
+            document.getElementById('shareCodeDisplay').classList.remove('hidden');
+            showStatus('createStatus', `Share created successfully! Code: ${code}`, 'success');
+        }
+
+        // Open existing share
+        function openShare() {
+            const code = document.getElementById('openCode').value.trim().toUpperCase();
+            if (!code) {
+                showStatus('openStatus', 'Please enter a share code', 'error');
+                return;
+            }
+
+            if (shares[code]) {
+                currentShareCode = code;
+                displayShare(code, shares[code]);
+                showStatus('openStatus', 'Share loaded successfully!', 'success');
+            } else {
+                showStatus('openStatus', 'Share not found. Check the code.', 'error');
+            }
+        }
+
+        // Display share content
+        function displayShare(code, shareData) {
+            document.getElementById('viewerSection').classList.remove('hidden');
+            document.getElementById('viewerTitle').textContent = shareData.title;
+            document.getElementById('viewerCode').textContent = code;
+            document.getElementById('liveText').textContent = shareData.text || 'No text content';
+            
+            // Display files
+            const filesList = document.getElementById('filesList');
+            if (shareData.files && shareData.files.length > 0) {
+                filesList.innerHTML = '';
+                shareData.files.forEach(file => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <span>${file.name} (${(file.size/1024).toFixed(1)} KB)</span>
+                        <button onclick="downloadFile('${file.name}', '${file.data}')">Download</button>
+                    `;
+                    filesList.appendChild(fileItem);
+                });
+            } else {
+                filesList.innerHTML = 'No files shared';
+            }
+        }
+
+        // Load share data (for real-time updates)
+        function loadShareData(code) {
+            const updatedShares = JSON.parse(localStorage.getItem('airforshare_data') || '{}');
+            if (updatedShares[code]) {
+                shares = updatedShares;
+                displayShare(code, updatedShares[code]);
+            }
+        }
+
+        // Send quick update
+        function sendQuickUpdate() {
+            const message = document.getElementById('quickMessage').value.trim();
+            if (!message || !currentShareCode) return;
+
+            const shareData = shares[currentShareCode];
+            const timestamp = new Date().toLocaleTimeString();
+            const update = `\n[${timestamp}] ${message}`;
+            
+            shareData.text = (shareData.text || '') + update;
+            shareData.lastUpdate = new Date().toISOString();
+            
+            shares[currentShareCode] = shareData;
+            localStorage.setItem('airforshare_data', JSON.stringify(shares));
+            
+            document.getElementById('quickMessage').value = '';
+            displayShare(currentShareCode, shareData);
+        }
+
+        // Download file
+        function downloadFile(filename, dataUrl) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            link.click();
+        }
+
+        // Copy share code
+        function copyCode() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Clear functions
+        function clearCreate() {
+            document.getElementById('shareTitle').value = '';
+            document.getElementById('shareText').value = '';
+            document.getElementById('shareFiles').value = '';
+            document.getElementById('shareCodeDisplay').classList.add('hidden');
+            document.getElementById('createStatus').classList.add('hidden');
+        }
+
+        function clearViewer() {
+            document.getElementById('viewerSection').classList.add('hidden');
+            document.getElementById('openCode').value = '';
+            document.getElementById('quickMessage').value = '';
+            document.getElementById('openStatus').classList.add('hidden');
+            currentShareCode = null;
+        }
+
+        // Show status messages
+        function showStatus(elementId, message, type) {
+            const statusEl = document.getElementById(elementId);
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.classList.remove('hidden');
+            
+            setTimeout(() => {
+                statusEl.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Network status monitoring
+        window.addEventListener('online', () => {
+            document.getElementById('networkStatus').textContent = 'Connected';
         });
-        // attach download listeners
-        document.querySelectorAll(".downloadBtn").forEach(b=>{
-          b.onclick = () => {
-            const url = b.dataset.url;
-            window.open(url, "_blank");
-          };
+
+        window.addEventListener('offline', () => {
+            document.getElementById('networkStatus').textContent = 'Offline';
         });
-      });
-    });
 
-    // Enter key support for inputs
-    quickText.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendQuickText.click();
-    });
-    
-    openCodeInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") openBtn.click();
-    });
-
-    // Quick text send: append an "edit" entry and update latestText
-    sendQuickText.addEventListener("click", async () => {
-      const code = viewerCode.textContent;
-      if (!code) return alert("Open a share first");
-      const val = quickText.value.trim();
-      if (!val) return;
-      const editsCol = collection(db, "shares", code, "edits");
-      const shareRef = doc(db, "shares", code);
-
-      // create an edit doc and also update latestText in transaction
-      try {
-        await runTransaction(db, async (tx) => {
-          const sSnap = await tx.get(shareRef);
-          if (!sSnap.exists()) throw "Share missing";
-          // create edit
-          const newEditRef = doc(editsCol); // auto id
-          tx.set(newEditRef, {
-            text: val,
-            createdAt: serverTimestamp(),
-            author: auth.currentUser ? auth.currentUser.uid : null
-          });
-          // update latestText by appending
-          const prev = sSnap.data().latestText || "";
-          const combined = prev ? prev + "\n" + val : val;
-          tx.update(shareRef, { latestText: combined });
-        });
-        quickText.value = "";
-      } catch (e) {
-        console.error("Failed to send quick text", e);
-        alert("Failed to send update");
-      }
-    });
-
-    // Helper: escape HTML for safe insertion
-    function escapeHtml(str){
-      if(!str) return "";
-      return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-    }
-
-    // Simple cleanup note: expired shares are not auto-deleted by this client.
-    // You can add a Cloud Function to periodically delete expired share docs and storage files.
-
-    // OPTIONAL: If you want P2P (WebRTC) direct transfer when both peers are on same network,
-    // we can add a signaling channel using Firestore (e.g., collection 'webrtc_signals/{code}').
-    // That reduces storage usage and speeds up LAN transfers. Tell me if you want that and I'll add.
-  </script>
+        // Initialize app
+        init();
+    </script>
 </body>
 </html>
