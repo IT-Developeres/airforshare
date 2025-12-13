@@ -1,0 +1,12 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Files in shares folder
+    match /shares/{code}/{fileName} {
+      allow read: if true;  // Anyone can download files with code
+      allow write: if request.auth != null;  // Only authenticated users can upload
+      allow delete: if request.auth != null;  // Only authenticated users can delete
+    }
+  }
+}
