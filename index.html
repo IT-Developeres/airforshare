@@ -36,7 +36,7 @@
         <h1>🚀 AirForShare - Real-time Sharing</h1>
         
         <div class="network-info">
-            <strong>Status:</strong> <span id="connectionStatus">Initializing...</span><br>
+            <strong>Status:</strong> <span id="connectionStatus">Connecting to Firebase...</span><br>
             <strong>Total Shares:</strong> <span id="totalShares">0</span>
         </div>
 
@@ -71,7 +71,7 @@
         <!-- My Shares Section -->
         <div class="section">
             <h3>📋 My Shares</h3>
-            <div id="myShares" class="share-list">No shares created yet</div>
+            <div id="myShares" class="share-list">Loading shares...</div>
             <button class="clear-btn" id="clearAllBtn">Clear All Shares</button>
         </div>
 
@@ -98,11 +98,42 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH0E6mkfkEUh76nv__2fOk-HJteZCj-hE",
+            authDomain: "airforshare-ffcee.firebaseapp.com",
+            projectId: "airforshare-ffcee",
+            storageBucket: "airforshare-ffcee.firebasestorage.app",
+            messagingSenderId: "1086862252600",
+            appId: "1:1086862252600:web:d0aad96edea3ab6f27e4cd"
+        };
+
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
         // Global variables
         let shares = {};
         let currentShareCode = null;
         let isAuthenticated = false;
+
+        // Sign in anonymously
+        signInAnonymously(auth).then(() => {
+            isAuthenticated = true;
+            console.log('✅ Firebase authenticated');
+            document.getElementById('connectionStatus').textContent = 'Firebase connected - Ready to share';
+            loadShares();
+        }).catch((error) => {
+            console.error('❌ Firebase auth failed:', error);
+            document.getElementById('connectionStatus').textContent = 'Firebase connection failed';
+        });
 
         // Generate random 6-character code
         function generateCode() {
@@ -146,29 +177,76 @@
             });
         }
 
-        // Save shares to localStorage
-        function saveShares() {
-            localStorage.setItem('airforshare_data', JSON.stringify(shares));
-            updateSharesList();
-            updateTotalShares();
+        // Load shares from Firebase
+        async function loadShares() {
+            if (!isAuthenticated) return;
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "shares"));
+                shares = {};
+                querySnapshot.forEach((doc) => {
+                    shares[doc.id] = doc.data();
+                });
+                
+                console.log(`📥 Loaded ${Object.keys(shares).length} shares from Firebase`);
+                updateSharesList();
+                updateTotalShares();
+                
+                // Set up real-time listener
+                onSnapshot(collection(db, "shares"), (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added" || change.type === "modified") {
+                            shares[change.doc.id] = change.doc.data();
+                        }
+                        if (change.type === "removed") {
+                            delete shares[change.doc.id];
+                        }
+                    });
+                    updateSharesList();
+                    updateTotalShares();
+                    
+                    // Update current viewer if needed
+                    if (currentShareCode && shares[currentShareCode]) {
+                        displayShare(currentShareCode, shares[currentShareCode]);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('❌ Error loading shares:', error);
+                document.getElementById('connectionStatus').textContent = 'Error loading shares';
+            }
         }
 
-        // Load shares from localStorage
-        function loadShares() {
-            const stored = localStorage.getItem('airforshare_data');
-            shares = stored ? JSON.parse(stored) : {};
-            updateSharesList();
-            updateTotalShares();
+        // Save share to Firebase
+        async function saveShareToFirebase(code, shareData) {
+            if (!isAuthenticated) {
+                console.log('❌ Not authenticated');
+                return false;
+            }
+            
+            try {
+                await setDoc(doc(db, "shares", code), shareData);
+                console.log('✅ Share saved to Firebase:', code);
+                return true;
+            } catch (error) {
+                console.error('❌ Error saving to Firebase:', error);
+                return false;
+            }
         }
 
         // Create new share
-        function createShare() {
+        async function createShare() {
             const title = document.getElementById('shareTitle').value.trim() || 'Untitled';
             const text = document.getElementById('shareText').value;
             const files = document.getElementById('shareFiles').files;
             
             if (!text && files.length === 0) {
                 showStatus('createStatus', 'Please add some text or files to share', 'error');
+                return;
+            }
+
+            if (!isAuthenticated) {
+                showStatus('createStatus', 'Please wait for Firebase connection', 'error');
                 return;
             }
 
@@ -186,7 +264,7 @@
                 let filesProcessed = 0;
                 for (let file of files) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = async function(e) {
                         shareData.files.push({
                             name: file.name,
                             size: file.size,
@@ -196,24 +274,32 @@
                         
                         filesProcessed++;
                         if (filesProcessed === files.length) {
-                            saveShare(code, shareData);
+                            await saveShare(code, shareData);
                         }
                     };
                     reader.readAsDataURL(file);
                 }
             } else {
-                saveShare(code, shareData);
+                await saveShare(code, shareData);
             }
         }
 
         // Save share
-        function saveShare(code, shareData) {
-            shares[code] = shareData;
-            saveShares();
+        async function saveShare(code, shareData) {
+            console.log('💾 Saving share:', code);
             
-            document.getElementById('generatedCode').textContent = code;
-            document.getElementById('shareCodeDisplay').classList.remove('hidden');
-            showStatus('createStatus', `Share created! Code: ${code}`, 'success');
+            const success = await saveShareToFirebase(code, shareData);
+            
+            if (success) {
+                shares[code] = shareData;
+                document.getElementById('generatedCode').textContent = code;
+                document.getElementById('shareCodeDisplay').classList.remove('hidden');
+                showStatus('createStatus', `✅ Share created! Code: ${code} - Saved to Firebase`, 'success');
+                updateSharesList();
+                updateTotalShares();
+            } else {
+                showStatus('createStatus', '❌ Failed to save to Firebase', 'error');
+            }
         }
 
         // Open share by code
@@ -264,7 +350,7 @@
         }
 
         // Send quick update
-        function sendQuickUpdate() {
+        async function sendQuickUpdate() {
             const message = document.getElementById('quickMessage').value.trim();
             if (!message || !currentShareCode) return;
 
@@ -275,11 +361,13 @@
             shareData.text = (shareData.text || '') + update;
             shareData.lastUpdate = new Date().toISOString();
             
-            shares[currentShareCode] = shareData;
-            saveShares();
+            const success = await saveShareToFirebase(currentShareCode, shareData);
             
-            document.getElementById('quickMessage').value = '';
-            displayShare(currentShareCode, shareData);
+            if (success) {
+                shares[currentShareCode] = shareData;
+                document.getElementById('quickMessage').value = '';
+                displayShare(currentShareCode, shareData);
+            }
         }
 
         // Download file
@@ -294,22 +382,42 @@
         }
 
         // Delete share
-        function deleteShare(code) {
+        async function deleteShare(code) {
             if (confirm(`Delete share "${shares[code].title}"?`)) {
-                delete shares[code];
-                saveShares();
-                if (currentShareCode === code) {
-                    clearViewer();
+                try {
+                    await deleteDoc(doc(db, "shares", code));
+                    delete shares[code];
+                    updateSharesList();
+                    updateTotalShares();
+                    if (currentShareCode === code) {
+                        clearViewer();
+                    }
+                    console.log('✅ Share deleted:', code);
+                } catch (error) {
+                    console.error('❌ Error deleting share:', error);
                 }
             }
         }
 
         // Clear all shares
-        function clearAllShares() {
+        async function clearAllShares() {
             if (confirm('Delete all shares? This cannot be undone.')) {
-                shares = {};
-                saveShares();
-                clearViewer();
+                try {
+                    const querySnapshot = await getDocs(collection(db, "shares"));
+                    const deletePromises = [];
+                    querySnapshot.forEach((doc) => {
+                        deletePromises.push(deleteDoc(doc.ref));
+                    });
+                    await Promise.all(deletePromises);
+                    
+                    shares = {};
+                    updateSharesList();
+                    updateTotalShares();
+                    clearViewer();
+                    console.log('✅ All shares cleared');
+                } catch (error) {
+                    console.error('❌ Error clearing shares:', error);
+                }
             }
         }
 
@@ -350,10 +458,13 @@
             }, 5000);
         }
 
+        // Make functions global for onclick handlers
+        window.openShareByCode = openShareByCode;
+        window.deleteShare = deleteShare;
+        window.downloadFile = downloadFile;
+
         // Initialize app
         function init() {
-            loadShares();
-            
             // Event listeners
             document.getElementById('createBtn').addEventListener('click', createShare);
             document.getElementById('clearBtn').addEventListener('click', clearCreate);
@@ -371,8 +482,6 @@
             document.getElementById('quickMessage').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') sendQuickUpdate();
             });
-
-            document.getElementById('connectionStatus').textContent = 'Ready - Local storage active';
         }
 
         // Start the app
