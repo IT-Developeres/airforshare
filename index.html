@@ -116,6 +116,16 @@
         import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
+        // Global variables
+        let shares = {};
+        let currentShareCode = null;
+        let broadcastChannel = null;
+        let networkSync = null;
+        let syncInterval = null;
+        let firebaseDB = null;
+        let firebaseStorage = null;
+        let isAuthenticated = false;
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         firebaseDB = getFirestore(app);
@@ -123,7 +133,6 @@
         const auth = getAuth(app);
 
         // Sign in anonymously for Firebase rules
-        let isAuthenticated = false;
         signInAnonymously(auth).then(() => {
             isAuthenticated = true;
             console.log('Signed in anonymously');
@@ -140,14 +149,6 @@
                 document.getElementById('connectionStatus').textContent = 'Firebase authentication failed';
             }
         });
-        // Global variables
-        let shares = {};
-        let currentShareCode = null;
-        let broadcastChannel = null;
-        let networkSync = null;
-        let syncInterval = null;
-        let firebaseDB = null;
-        let firebaseStorage = null;
 
         // Initialize BroadcastChannel for cross-tab communication
         function initBroadcast() {
@@ -548,6 +549,20 @@
                 if (e.key === 'Enter') sendQuickUpdate();
             });
         }
+
+        // Start the app
+        init();
+        // Make functions global for onclick handlers
+        window.createShare = createShare;
+        window.openShare = openShare;
+        window.clearCreate = clearCreate;
+        window.clearViewer = clearViewer;
+        window.clearAllShares = clearAllShares;
+        window.copyCode = copyCode;
+        window.sendQuickUpdate = sendQuickUpdate;
+        window.downloadFile = downloadFile;
+        window.deleteShare = deleteShare;
+        window.openShareByCode = openShareByCode;
 
         // Start the app
         init();
