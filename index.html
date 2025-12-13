@@ -118,8 +118,8 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+        firebaseDB = getFirestore(app);
+        firebaseStorage = getStorage(app);
         const auth = getAuth(app);
 
         // Sign in anonymously for Firebase rules
@@ -146,8 +146,8 @@
         let broadcastChannel = null;
         let networkSync = null;
         let syncInterval = null;
-        let db = null;
-        let storage = null;
+        let firebaseDB = null;
+        let firebaseStorage = null;
 
         // Initialize BroadcastChannel for cross-tab communication
         function initBroadcast() {
@@ -168,7 +168,7 @@
         function initFirebaseSync() {
             try {
                 // Listen for real-time updates
-                const unsubscribe = onSnapshot(collection(db, "shares"), (snapshot) => {
+                const unsubscribe = onSnapshot(collection(firebaseDB, "shares"), (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === "added" || change.type === "modified") {
                             shares[change.doc.id] = change.doc.data();
@@ -204,7 +204,7 @@
         // Load shares from Firebase
         async function loadShares() {
             try {
-                const querySnapshot = await getDocs(collection(db, "shares"));
+                const querySnapshot = await getDocs(collection(firebaseDB, "shares"));
                 shares = {};
                 querySnapshot.forEach((doc) => {
                     shares[doc.id] = doc.data();
@@ -231,7 +231,7 @@
             }
             
             try {
-                await setDoc(doc(db, "shares", code), {
+                await setDoc(doc(firebaseDB, "shares", code), {
                     ...shareData,
                     timestamp: serverTimestamp()
                 });
@@ -449,7 +449,7 @@
                 if (isAuthenticated) {
                     try {
                         // Delete from Firebase
-                        await deleteDoc(doc(db, "shares", code));
+                        await deleteDoc(doc(firebaseDB, "shares", code));
                         console.log("Share deleted from Firebase");
                     } catch (error) {
                         console.error("Error deleting from Firebase:", error);
@@ -473,7 +473,7 @@
                 if (isAuthenticated) {
                     try {
                         // Delete all from Firebase
-                        const querySnapshot = await getDocs(collection(db, "shares"));
+                        const querySnapshot = await getDocs(collection(firebaseDB, "shares"));
                         const deletePromises = [];
                         querySnapshot.forEach((doc) => {
                             deletePromises.push(deleteDoc(doc.ref));
