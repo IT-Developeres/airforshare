@@ -36,7 +36,7 @@
         <h1>🚀 AirForShare - Real-time Sharing</h1>
         
         <div class="network-info">
-            <strong>Status:</strong> <span id="connectionStatus">Ready</span><br>
+            <strong>Status:</strong> <span id="connectionStatus">Initializing...</span><br>
             <strong>Total Shares:</strong> <span id="totalShares">0</span>
         </div>
 
@@ -47,13 +47,13 @@
             <textarea id="shareText" rows="5" placeholder="Type or paste your text here..."></textarea>
             <input type="file" id="shareFiles" multiple>
             <div class="btn-group">
-                <button onclick="createShare()">Save & Share</button>
-                <button class="clear-btn" onclick="clearCreate()">Clear All</button>
+                <button id="createBtn">Save & Share</button>
+                <button class="clear-btn" id="clearBtn">Clear All</button>
             </div>
             <div id="createStatus" class="status hidden"></div>
             <div id="shareCodeDisplay" class="hidden">
                 <div class="code-display" id="generatedCode"></div>
-                <button onclick="copyCode()">📋 Copy Code</button>
+                <button id="copyBtn">📋 Copy Code</button>
             </div>
         </div>
 
@@ -62,8 +62,8 @@
             <h3>🔓 Open Share</h3>
             <input type="text" id="openCode" placeholder="Enter 6-character share code">
             <div class="btn-group">
-                <button onclick="openShare()">Open Share</button>
-                <button class="clear-btn" onclick="clearViewer()">Clear Viewer</button>
+                <button id="openBtn">Open Share</button>
+                <button class="clear-btn" id="clearViewerBtn">Clear Viewer</button>
             </div>
             <div id="openStatus" class="status hidden"></div>
         </div>
@@ -72,7 +72,7 @@
         <div class="section">
             <h3>📋 My Shares</h3>
             <div id="myShares" class="share-list">No shares created yet</div>
-            <button class="clear-btn" onclick="clearAllShares()">Clear All Shares</button>
+            <button class="clear-btn" id="clearAllBtn">Clear All Shares</button>
         </div>
 
         <!-- Viewer Section -->
@@ -93,162 +93,25 @@
             <div style="margin: 15px 0;">
                 <strong>💬 Send Quick Update:</strong>
                 <input type="text" id="quickMessage" placeholder="Type a quick message...">
-                <button onclick="sendQuickUpdate()">Send</button>
+                <button id="sendBtn">Send</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyDH0E6mkfkEUh76nv__2fOk-HJteZCj-hE",
-            authDomain: "airforshare-ffcee.firebaseapp.com",
-            projectId: "airforshare-ffcee",
-            storageBucket: "airforshare-ffcee.firebasestorage.app",
-            messagingSenderId: "1086862252600",
-            appId: "1:1086862252600:web:d0aad96edea3ab6f27e4cd"
-        };
-
-        // Firebase imports
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-
+    <script>
         // Global variables
         let shares = {};
         let currentShareCode = null;
-        let broadcastChannel = null;
-        let networkSync = null;
-        let syncInterval = null;
-        let firebaseDB = null;
-        let firebaseStorage = null;
         let isAuthenticated = false;
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        firebaseDB = getFirestore(app);
-        firebaseStorage = getStorage(app);
-        const auth = getAuth(app);
-
-        // Sign in anonymously for Firebase rules
-        signInAnonymously(auth).then(() => {
-            isAuthenticated = true;
-            console.log('Signed in anonymously');
-        }).catch((error) => {
-            console.error('Anonymous sign-in failed:', error);
-        });
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                isAuthenticated = true;
-                document.getElementById('connectionStatus').textContent = 'Firebase authenticated - Ready to sync';
-            } else {
-                isAuthenticated = false;
-                document.getElementById('connectionStatus').textContent = 'Firebase authentication failed';
+        // Generate random 6-character code
+        function generateCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-        });
-
-        // Initialize BroadcastChannel for cross-tab communication
-        function initBroadcast() {
-            if ('BroadcastChannel' in window) {
-                broadcastChannel = new BroadcastChannel('airforshare');
-                broadcastChannel.onmessage = function(event) {
-                    if (event.data.type === 'share_updated') {
-                        loadShares();
-                        if (currentShareCode === event.data.code) {
-                            displayShare(event.data.code, shares[event.data.code]);
-                        }
-                    }
-                };
-            }
-        }
-
-        // Firebase real-time sync
-        function initFirebaseSync() {
-            try {
-                // Listen for real-time updates
-                const unsubscribe = onSnapshot(collection(firebaseDB, "shares"), (snapshot) => {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === "added" || change.type === "modified") {
-                            shares[change.doc.id] = change.doc.data();
-                        }
-                        if (change.type === "removed") {
-                            delete shares[change.doc.id];
-                        }
-                    });
-                    
-                    updateSharesList();
-                    updateTotalShares();
-                    
-                    // Update current viewer if needed
-                    if (currentShareCode && shares[currentShareCode]) {
-                        displayShare(currentShareCode, shares[currentShareCode]);
-                    }
-                });
-                
-                document.getElementById('connectionStatus').textContent = 'Firebase real-time sync active';
-            } catch (error) {
-                console.error("Firebase sync error:", error);
-                document.getElementById('connectionStatus').textContent = 'Firebase sync failed - using local storage';
-            }
-        }
-
-        // Broadcast update to other tabs
-        function broadcastUpdate(type, code) {
-            if (broadcastChannel) {
-                broadcastChannel.postMessage({ type: type, code: code });
-            }
-        }
-
-        // Load shares from Firebase
-        async function loadShares() {
-            try {
-                const querySnapshot = await getDocs(collection(firebaseDB, "shares"));
-                shares = {};
-                querySnapshot.forEach((doc) => {
-                    shares[doc.id] = doc.data();
-                });
-                updateSharesList();
-                updateTotalShares();
-                document.getElementById('connectionStatus').textContent = `Firebase connected - ${Object.keys(shares).length} shares loaded`;
-            } catch (error) {
-                console.error("Error loading shares:", error);
-                document.getElementById('connectionStatus').textContent = 'Firebase connection failed - using local storage';
-                // Fallback to localStorage
-                const stored = localStorage.getItem('airforshare_data');
-                shares = stored ? JSON.parse(stored) : {};
-                updateSharesList();
-                updateTotalShares();
-            }
-        }
-
-        // Save share to Firebase
-        async function saveShareToFirebase(code, shareData) {
-            if (!isAuthenticated) {
-                console.log('Not authenticated, skipping Firebase save');
-                return false;
-            }
-            
-            try {
-                await setDoc(doc(firebaseDB, "shares", code), {
-                    ...shareData,
-                    timestamp: serverTimestamp()
-                });
-                return true;
-            } catch (error) {
-                console.error("Error saving to Firebase:", error);
-                return false;
-            }
-        }
-
-        // Save shares (Firebase + localStorage backup)
-        async function saveShares() {
-            // Always save to localStorage as backup
-            localStorage.setItem('airforshare_data', JSON.stringify(shares));
-            updateSharesList();
-            updateTotalShares();
+            return code;
         }
 
         // Update total shares count
@@ -283,14 +146,19 @@
             });
         }
 
-        // Generate random 6-character code
-        function generateCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = '';
-            for (let i = 0; i < 6; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
+        // Save shares to localStorage
+        function saveShares() {
+            localStorage.setItem('airforshare_data', JSON.stringify(shares));
+            updateSharesList();
+            updateTotalShares();
+        }
+
+        // Load shares from localStorage
+        function loadShares() {
+            const stored = localStorage.getItem('airforshare_data');
+            shares = stored ? JSON.parse(stored) : {};
+            updateSharesList();
+            updateTotalShares();
         }
 
         // Create new share
@@ -339,25 +207,13 @@
         }
 
         // Save share
-        async function saveShare(code, shareData) {
+        function saveShare(code, shareData) {
             shares[code] = shareData;
-            
-            // Save to Firebase
-            const firebaseSaved = await saveShareToFirebase(code, shareData);
-            
-            // Save to localStorage (backup)
-            await saveShares();
+            saveShares();
             
             document.getElementById('generatedCode').textContent = code;
             document.getElementById('shareCodeDisplay').classList.remove('hidden');
-            
-            if (firebaseSaved) {
-                showStatus('createStatus', `Share created! Code: ${code} - Saved to Firebase`, 'success');
-            } else {
-                showStatus('createStatus', `Share created! Code: ${code} - Saved locally (Firebase failed)`, 'success');
-            }
-            
-            broadcastUpdate('share_created', code);
+            showStatus('createStatus', `Share created! Code: ${code}`, 'success');
         }
 
         // Open share by code
@@ -408,7 +264,7 @@
         }
 
         // Send quick update
-        async function sendQuickUpdate() {
+        function sendQuickUpdate() {
             const message = document.getElementById('quickMessage').value.trim();
             if (!message || !currentShareCode) return;
 
@@ -420,17 +276,10 @@
             shareData.lastUpdate = new Date().toISOString();
             
             shares[currentShareCode] = shareData;
-            
-            // Update in Firebase
-            await saveShareToFirebase(currentShareCode, shareData);
-            
-            // Update localStorage
-            await saveShares();
+            saveShares();
             
             document.getElementById('quickMessage').value = '';
             displayShare(currentShareCode, shareData);
-            
-            broadcastUpdate('share_updated', currentShareCode);
         }
 
         // Download file
@@ -445,52 +294,22 @@
         }
 
         // Delete share
-        async function deleteShare(code) {
+        function deleteShare(code) {
             if (confirm(`Delete share "${shares[code].title}"?`)) {
-                if (isAuthenticated) {
-                    try {
-                        // Delete from Firebase
-                        await deleteDoc(doc(firebaseDB, "shares", code));
-                        console.log("Share deleted from Firebase");
-                    } catch (error) {
-                        console.error("Error deleting from Firebase:", error);
-                    }
-                }
-                
-                // Delete from local
                 delete shares[code];
-                await saveShares();
-                
+                saveShares();
                 if (currentShareCode === code) {
                     clearViewer();
                 }
-                broadcastUpdate('share_deleted', code);
             }
         }
 
         // Clear all shares
-        async function clearAllShares() {
+        function clearAllShares() {
             if (confirm('Delete all shares? This cannot be undone.')) {
-                if (isAuthenticated) {
-                    try {
-                        // Delete all from Firebase
-                        const querySnapshot = await getDocs(collection(firebaseDB, "shares"));
-                        const deletePromises = [];
-                        querySnapshot.forEach((doc) => {
-                            deletePromises.push(deleteDoc(doc.ref));
-                        });
-                        await Promise.all(deletePromises);
-                        console.log("All shares deleted from Firebase");
-                    } catch (error) {
-                        console.error("Error clearing Firebase:", error);
-                    }
-                }
-                
-                // Clear local
                 shares = {};
-                await saveShares();
+                saveShares();
                 clearViewer();
-                broadcastUpdate('all_shares_cleared', null);
             }
         }
 
@@ -532,13 +351,17 @@
         }
 
         // Initialize app
-        async function init() {
-            initBroadcast();
+        function init() {
+            loadShares();
             
-            // Initialize Firebase
-            document.getElementById('connectionStatus').textContent = 'Connecting to Firebase...';
-            await loadShares();
-            initFirebaseSync();
+            // Event listeners
+            document.getElementById('createBtn').addEventListener('click', createShare);
+            document.getElementById('clearBtn').addEventListener('click', clearCreate);
+            document.getElementById('openBtn').addEventListener('click', openShare);
+            document.getElementById('clearViewerBtn').addEventListener('click', clearViewer);
+            document.getElementById('clearAllBtn').addEventListener('click', clearAllShares);
+            document.getElementById('copyBtn').addEventListener('click', copyCode);
+            document.getElementById('sendBtn').addEventListener('click', sendQuickUpdate);
             
             // Enter key support
             document.getElementById('openCode').addEventListener('keypress', (e) => {
@@ -548,21 +371,9 @@
             document.getElementById('quickMessage').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') sendQuickUpdate();
             });
-        }
 
-        // Start the app
-        init();
-        // Make functions global for onclick handlers
-        window.createShare = createShare;
-        window.openShare = openShare;
-        window.clearCreate = clearCreate;
-        window.clearViewer = clearViewer;
-        window.clearAllShares = clearAllShares;
-        window.copyCode = copyCode;
-        window.sendQuickUpdate = sendQuickUpdate;
-        window.downloadFile = downloadFile;
-        window.deleteShare = deleteShare;
-        window.openShareByCode = openShareByCode;
+            document.getElementById('connectionStatus').textContent = 'Ready - Local storage active';
+        }
 
         // Start the app
         init();
